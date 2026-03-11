@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Image Generator | Atanu Paul</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/src/style.css">
 </head>
+
 <body class="text-slate-900">
 
     <div id="app-container" class="main-wrapper p-4 md:p-6 transition-all duration-700 ease-in-out">
@@ -15,8 +18,9 @@
         <div class="shape shape-3"></div>
 
         <!-- Split View Container -->
-        <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 relative z-10 transition-all duration-700 ease-in-out" id="split-view">
-            
+        <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 relative z-10 transition-all duration-700 ease-in-out"
+            id="split-view">
+
             <!-- Left Side: Input Card -->
             <div id="input-section" class="w-full max-w-2xl transition-all duration-700 ease-in-out">
                 <header class="text-center mb-8 md:mb-12 transition-all duration-700" id="main-header">
@@ -27,9 +31,31 @@
                         Made By ❤️Atanu...
                     </p>
                 </header>
-
                 <div class="premium-card w-full rounded-[2.5rem] md:rounded-[3.5rem] p-6 md:p-12">
                     <div class="flex flex-col gap-6 md:gap-8">
+                        <!-- Controls Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-4">
+                                <label class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase px-2">Aspect Ratio</label>
+                                <div class="option-grid" id="ratio-selector">
+                                    <button onclick="setRatio('1:1')" class="ratio-btn active" data-ratio="1:1">1:1 Square</button>
+                                    <button onclick="setRatio('16:9')" class="ratio-btn" data-ratio="16:9">16:9 Wide</button>
+                                    <button onclick="setRatio('9:16')" class="ratio-btn" data-ratio="9:16">9:16 Tall</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <label class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase px-2">Style Preset</label>
+                                <select id="style-preset" class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl text-sm text-slate-300 outline-none focus:border-cyan-500/50 transition-all appearance-none cursor-pointer">
+                                    <option value="">None (Auto)</option>
+                                    <option value="cinematic">Cinematic</option>
+                                    <option value="anime">Anime Style</option>
+                                    <option value="cyberpunk">Cyberpunk</option>
+                                    <option value="digital-art">Digital Art</option>
+                                    <option value="photorealistic">Photorealistic</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center justify-between px-2">
                                 <label class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase">Imagination Prompt</label>
@@ -37,23 +63,22 @@
                                     ✨ Surprise Me
                                 </button>
                             </div>
-                            <textarea id="prompt" rows="5" 
+                            <textarea id="prompt" rows="4" 
                                 class="w-full p-6 md:p-8 text-lg bg-white/5 border border-white/10 rounded-[2rem] focus:ring-4 focus:ring-cyan-500/20 focus:border-cyan-500/50 outline-none transition-all placeholder:text-slate-500 resize-none shadow-2xl glass-input text-white scroll-smooth"
                                 placeholder="Describe your imagination..."></textarea>
                         </div>
 
-                        <div id="loading" class="hidden text-center py-6">
-                            <div class="flex items-center justify-center space-x-3 text-cyan-400 font-bold tracking-[0.3em] text-xs uppercase">
-                                <span class="animate-bounce">●</span>
-                                <span class="animate-bounce [animation-delay:-.15s]">●</span>
-                                <span class="animate-bounce [animation-delay:-.3s]">●</span>
+                        <div id="loading" class="hidden">
+                            <div class="magic-loader"></div>
+                            <div class="flex items-center justify-center space-x-3 text-cyan-400 font-bold tracking-[0.3em] text-[10px] uppercase mt-2">
+                                <span class="animate-pulse">Generating Magic...</span>
                             </div>
                         </div>
                         
                         <button onclick="generateImage()" id="genBtn"
-                            class="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-50 hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white font-bold py-5 md:py-6 rounded-[2rem] flex justify-center items-center gap-4 transition-all transform active:scale-[0.98] shadow-2xl group">
-                            <span id="btnText" class="text-base md:text-lg tracking-tight group-hover:scale-105 transition-transform">Generate Masterpiece</span>
-                            <div id="btnLoader" class="hidden w-6 h-6 border-3 border-white/30 border-t-white animate-spin rounded-full"></div>
+                            class="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white font-bold py-5 md:py-6 rounded-[2rem] flex justify-center items-center gap-4 transition-all transform active:scale-[0.98] shadow-2xl group relative overflow-hidden">
+                            <span id="btnText" class="text-base md:text-lg tracking-tight group-hover:scale-105 transition-transform z-10">Generate Masterpiece</span>
+                            <div id="btnLoader" class="hidden w-6 h-6 border-3 border-white/30 border-t-white animate-spin rounded-full z-10"></div>
                         </button>
                     </div>
                 </div>
@@ -72,19 +97,40 @@
                 <div class="space-y-6">
                     <div class="overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl bg-black/40 relative group">
                         <img id="outputImage" class="w-full transition-transform duration-1000 group-hover:scale-105" alt="Generated result">
+                        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p id="result-prompt-display" class="text-xs text-white/70 line-clamp-2 italic"></p>
+                        </div>
                     </div>
                     <div class="flex gap-3">
-                        <a id="downloadLink" download="atanu-gen.jpg" class="flex-1 text-center py-4 bg-white/10 text-white text-sm font-bold rounded-2xl hover:bg-white/20 border border-white/10 transition-all backdrop-blur-lg">Download</a>
+                        <a id="downloadLink" download="atanu-gen.jpg" class="flex-1 text-center py-4 bg-white/10 text-white text-sm font-bold rounded-2xl hover:bg-white/20 border border-white/10 transition-all backdrop-blur-lg cursor-pointer">Download</a>
+                        <button onclick="copyPrompt()" class="flex-1 text-center py-4 bg-white/5 text-white text-sm font-bold rounded-2xl hover:bg-white/10 border border-white/10 transition-all">Copy Prompt</button>
                         <button onclick="handleReset()" class="px-8 py-4 bg-slate-800/50 text-slate-400 text-sm font-bold rounded-2xl hover:bg-slate-700/50 border border-white/5 transition-all">Reset</button>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- History Gallery -->
+        <div id="history-section" class="hidden opacity-0 transition-all duration-1000">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Recent Creations</h2>
+                    <p class="text-slate-500 text-sm uppercase tracking-widest font-bold">Your artistic journey</p>
+                </div>
+                <button onclick="clearHistory()" class="text-[10px] font-bold text-slate-500 hover:text-red-400 transition-colors uppercase tracking-widest">Clear All</button>
+            </div>
+            <div id="history-grid" class="history-grid">
+                <!-- History items injected here -->
+            </div>
         </div>
     </div>
 
+    <!-- Notifications -->
+    <div id="toast-container"></div>
+
     <script type="module" src="/src/main.js"></script>
 </body>
-</html>
+
 dy>
+
 </html>
